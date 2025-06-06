@@ -17,11 +17,20 @@ A Streamlit-based tool that connects to a GitHub repository, analyzes code chang
 
 ## 🛠️ Flow Overview
 
-1. **User Inputs GitHub URL**
+## 🔐 API Key Setup
+
+> **Do not commit your `.env` file!**
+
+1. Copy the template:
+   ```bash
+   cp .env.example .env
+
+
+2. **User Inputs GitHub URL**
 
    * Tool clones the repo into a temporary local directory.
 
-2. **Commit Analysis**
+3. **Commit Analysis**
 
    * The tool checks the latest commits to identify changes in:
 
@@ -29,7 +38,7 @@ A Streamlit-based tool that connects to a GitHub repository, analyzes code chang
      * `module_b.py`
      * `module_c.py`
 
-3. **LLM Evaluation**
+4. **LLM Evaluation**
 
    * For each changed module:
 
@@ -40,16 +49,16 @@ A Streamlit-based tool that connects to a GitHub repository, analyzes code chang
        * Suggestions
        * Corrected code
 
-4. **Visual Comparison**
+5. **Visual Comparison**
 
    * The user sees the original and fixed code side-by-side.
    * Explanation and fix reasoning are shown.
 
-5. **Approval & Fix Application**
+6. **Approval & Fix Application**
 
    * User chooses to apply or skip each fix.
 
-6. **Commit & Push**
+7. **Commit & Push**
 
    * All approved fixes are committed to a new Git branch and pushed back.
 
