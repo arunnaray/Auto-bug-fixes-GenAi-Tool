@@ -1,17 +1,9 @@
-from openai import OpenAI
-from difflib import unified_diff
-from dotenv import load_dotenv, find_dotenv
+import openai
 import os
+from dotenv import load_dotenv, find_dotenv
 
-# Load environment variables
 load_dotenv(find_dotenv())
-
-# Create OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-def get_code_diff(original: str, modified: str) -> str:
-    diff = unified_diff(original.splitlines(), modified.splitlines(), lineterm='')
-    return "\n".join(diff)
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def ask_openai_to_fix(code: str, commit_msg: str) -> dict:
     prompt = f"""
@@ -36,19 +28,15 @@ Respond strictly in this format:
 <only the corrected code>
 """
 
-    response = client.chat.completions.create(
-        model="gpt-4",
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3
     )
 
-    full_response = response.choices[0].message.content
+    full_response = response["choices"][0]["message"]["content"]
     parts = full_response.split("---")
-    result = {
-        "reason": "",
-        "suggestions": "",
-        "fixed_code": ""
-    }
+    result = {"reason": "", "suggestions": "", "fixed_code": ""}
     for i, section in enumerate(parts):
         if "Reason" in section:
             result["reason"] = parts[i + 1].strip()
