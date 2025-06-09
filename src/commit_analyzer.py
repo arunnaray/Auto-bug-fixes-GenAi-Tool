@@ -2,12 +2,8 @@ import git
 from typing import List, Dict
 
 def analyze_commits(repo_path: str, modules: List[str]) -> Dict[str, List[str]]:
-    """
-    Checks which modules (A/B/C) were changed in recent commits.
-    """
     repo = git.Repo(repo_path)
     diff_summary = {mod: [] for mod in modules}
-
     for commit in repo.iter_commits('main', max_count=10):
         diff = commit.diff(commit.parents[0] if commit.parents else git.NULL_TREE, create_patch=False)
         for d in diff:
